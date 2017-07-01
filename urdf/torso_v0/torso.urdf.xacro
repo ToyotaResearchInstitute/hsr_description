@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) 2017, Toyota Motor Corporation
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Toyota Motor Corporation nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot name="torso" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find hsr_description)/urdf/torso_v0/torso.gazebo.xacro"/>
+
+    <!-- torso -->
+    <xacro:macro name="hsrb_torso" params="prefix parent mimic_joint *origin">
+        <joint name="${prefix}_lift_joint" type="prismatic">
+            <insert_block name="origin" />
+            <!-- <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0" /> -->
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="100.0" velocity="0.1" lower="0.0" upper="0.345" />
+            <parent link="${parent}" />
+            <child link="${prefix}_lift_link" />
+            <mimic joint="${mimic_joint}" multiplier="0.5" />
+            <dynamics damping="500.0"/>
+        </joint>
+
+        <link name="${prefix}_lift_link">
+            <inertial>
+                <mass value="3.420779"/>
+                <origin xyz="-0.051142 0.003454 -0.2905"/>
+                <inertia ixx="0.1045" ixy="-0.000460884801" ixz="0.000101130383"
+                    iyy="0.105" iyz="0.002941" izz="0.01284"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/torso_v0/torso_light.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/torso_v0/torso.stl" />
+                </geometry>
+            </collision>
+        </link>
+        <xacro:hsrb_torso_gazebo prefix="${prefix}" mimic_joint="${mimic_joint}"/>
+    </xacro:macro>
+</robot>

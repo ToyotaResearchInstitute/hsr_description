@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot name="head" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find hsr_description)/urdf/head_v2/head.transmission.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/head_v2/head.gazebo.xacro"/>
+
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/rgbd_sensor.urdf.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/rgb_sensor.urdf.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/wide_camera.urdf.xacro"/>
+
+    <!-- head -->
+    <xacro:macro name="hsrb_head" params="prefix parent *origin">
+        <joint name="${prefix}_pan_joint" type="revolute">
+            <insert_block name="origin" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="100.0" velocity="1.0" lower="-3.84" upper="1.75" />
+            <parent link="${parent}" />
+            <child link="${prefix}_pan_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_pan_link">
+            <inertial>
+                <mass value="0.571903"/>
+                <origin xyz="0.001724 -0.001969 -0.028886"/>
+                <inertia ixx="0.0009711421" ixy="0.00006179487" ixz="-0.000113923121"
+                    iyy="0.00065335493" iyz="0.000069036305" izz="0.000765202576"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_tilt_joint" type="revolute">
+            <origin xyz="0.02 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 -1.0 0.0" />
+            <limit effort="100.0" velocity="1.0" lower="-1.57" upper="0.52" />
+            <parent link="${prefix}_pan_link" />
+            <child link="${prefix}_tilt_link" />
+            <dynamics damping="10.0"/>
+        </joint>
+
+        <link name="${prefix}_tilt_link">
+            <inertial>
+                <mass value="2.123802"/>
+                <origin xyz="-0.055376 -0.002436 0.117733"/>
+                <inertia ixx="0.01941" ixy="-0.000138091054" ixz="0.005035" iyy="0.01498"
+                    iyz="0.000087492537" izz="0.01167"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.dae" />
+                </geometry>
+            </visual>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.dae" />
+                </geometry>
+            </visual>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.dae" />
+                </geometry>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/head.stl" />
+                </geometry>
+            </collision>
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/head_v1/tablet.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- cameras -->
+        <xacro:rgb_sensor prefix="${prefix}_l_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.00">
+            <origin xyz="0.02 0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
+        </xacro:rgb_sensor>
+
+        <xacro:rgb_sensor prefix="${prefix}_r_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.14">
+            <origin xyz="0.02 -0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
+        </xacro:rgb_sensor>
+
+        <xacro:wide_camera prefix="${prefix}_center" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" rpy="${pi/2.0} ${-pi/2.0} 0.0" >
+            <origin xyz="0.0195 0.0 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
+        </xacro:wide_camera>
+
+        <xacro:rgbd_sensor prefix="${prefix}" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" sensor_name="rgbd_sensor">
+            <origin xyz="-0.079796 0.022 0.215172" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
+        </xacro:rgbd_sensor>
+
+        <xacro:hsrb_head_gazebo prefix="${prefix}"/>
+        <xacro:hsrb_head_transmission prefix="${prefix}"/>
+    </xacro:macro>
+</robot>

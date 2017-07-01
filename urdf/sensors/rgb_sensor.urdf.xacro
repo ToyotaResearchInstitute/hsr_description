@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/rgb_sensor.gazebo.xacro"/>
+
+    <xacro:macro name="rgb_sensor" params="prefix parent robot_namespace *origin baseline">
+        <joint name="${prefix}_camera_joint" type="fixed">
+            <insert_block name="origin" />
+            <parent link="${parent}" />
+            <child link="${prefix}_camera_link" />
+        </joint>
+
+        <link name="${prefix}_camera_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/sensors/head_camera.dae" />
+                </geometry>
+            </visual>
+        </link>
+
+        <joint name="${prefix}_camera_gazebo_frame_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="${pi/2.0} ${-pi/2.0} 0.0"/>
+            <parent link="${prefix}_camera_link" />
+            <child link="${prefix}_camera_gazebo_frame" />
+        </joint>
+
+        <link name="${prefix}_camera_gazebo_frame"></link>
+
+        <xacro:rgb_sensor_gazebo
+            sensor_name="${prefix}_camera"
+            parent_frame="${prefix}_camera_gazebo_frame"
+            topic_frame_id="${prefix}_camera_frame"
+            robot_namespace="${robot_namespace}"
+            baseline="${baseline}" />
+    </xacro:macro>
+
+</robot>

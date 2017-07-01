@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot name="arm" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find hsr_description)/urdf/arm_v0/arm.transmission.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/arm_v0/arm.gazebo.xacro"/>
+
+    <!-- arm -->
+    <xacro:macro name="hsrb_arm" params="prefix parent *origin">
+        <joint name="${prefix}_lift_joint" type="prismatic">
+            <insert_block name="origin" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="100.0" velocity="0.2" lower="0.0" upper="0.69" />
+            <parent link="${parent}" />
+            <child link="${prefix}_lift_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_lift_link">
+            <inertial>
+                <mass value="1.275819"/>
+                <origin xyz="0.051549 0.042438 -0.064145"/>
+                <inertia ixx="0.004633" ixy="0.000475272668" ixz="-0.002403"
+                    iyy="0.008065" iyz="-0.000100268629" izz="0.007672"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_flex_joint" type="revolute">
+            <origin xyz="0.141 0.078 0.0" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 -1.0 0.0" />
+            <limit effort="100.0" velocity="1.2" lower="-2.62" upper="0.0" />
+            <parent link="${prefix}_lift_link" />
+            <child link="${prefix}_flex_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_flex_link">
+            <inertial>
+                <mass value="1.339295"/>
+                <origin xyz="0.000632 0.006404 0.118529"/>
+                <inertia ixx="7.528" ixy="-0.000020284207" ixz="-0.000022947194"
+                    iyy="0.007102" iyz="-0.000091796075" izz="0.001552"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex_light.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_roll_joint" type="revolute">
+            <origin xyz="0.005 0.0 0.345" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="100.0" velocity="2.0" lower="-2.09" upper="3.84" />
+            <parent link="${prefix}_flex_link" />
+            <child link="${prefix}_roll_link" />
+            <dynamics damping="0.1"/>
+        </joint>
+
+        <link name="${prefix}_roll_link">
+            <inertial>
+                <mass value="0.247936"/>
+                <origin xyz="-0.006927 0.002039 -0.064837"/>
+                <inertia ixx="0.004267" ixy="-0.000018322199" ixz="0.000017984455"
+                    iyy="0.000780923828" iyz="-0.00001392334" izz="0.00412"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll_light.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <xacro:hsrb_arm_gazebo prefix="${prefix}"/>
+        <xacro:hsrb_arm_transmission prefix="${prefix}"/>
+    </xacro:macro>
+</robot>

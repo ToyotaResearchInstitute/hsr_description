@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot name="base" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find hsr_description)/urdf/base_v2/base.transmission.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/base_v2/base.gazebo.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/laser.urdf.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/imu.urdf.xacro"/>
+
+    <!-- constant -->
+    <xacro:property name="drive_wheel_width" value="0.03" />
+    <xacro:property name="drive_wheel_radius" value="0.040" />
+
+    <xacro:property name="drive_wheel_offset_x" value="0.110" />
+    <xacro:property name="drive_wheel_offset_y" value="0.133" />
+
+    <xacro:property name="passive_wheel_radius" value="0.03" />
+    <xacro:property name="passive_wheel_offset_x" value="0.1495" />
+    <xacro:property name="passive_wheel_offset_y" value="0.055" />
+
+    <xacro:property name="drive_wheel_max_effort" value="11.067" />
+    <xacro:property name="drive_wheel_max_velocity" value="20.8" />
+
+    <xacro:property name="roll_joint_max_effort" value="34.46" />
+    <xacro:property name="roll_joint_max_velocity" value="2.5" />
+
+    <!-- drive wheel -->
+    <xacro:macro name="hsrb_drive_wheel" params="prefix suffix parent *origin">
+        <joint name="${prefix}_${suffix}_drive_wheel_joint" type="continuous">
+            <insert_block name="origin" />
+            <axis xyz="0.0 1.0 0.0" />
+            <limit effort="${drive_wheel_max_effort}" velocity="${drive_wheel_max_velocity}" />
+            <parent link="${parent}" />
+            <child link="${prefix}_${suffix}_drive_wheel_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_${suffix}_drive_wheel_link">
+            <visual>
+                <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${drive_wheel_radius}" length="${drive_wheel_width}" />
+                </geometry>
+                <material name="wheel" />
+            </visual>
+            <collision>
+                <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="${drive_wheel_radius}" length="${drive_wheel_width}" />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.015"/>
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <!-- passive wheel -->
+    <xacro:macro name="hsrb_passive_wheel" params="prefix suffix parent *origin">
+        <joint name="${prefix}_${suffix}_passive_wheel_x_frame_joint" type="continuous">
+            <insert_block name="origin" />
+            <axis xyz="1.0 0.0 0.0" />
+            <limit effort="1.0" velocity="3.0" />
+            <parent link="${parent}" />
+            <child link="${prefix}_${suffix}_passive_wheel_x_frame" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_${suffix}_passive_wheel_x_frame">
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.015"/>
+            </inertial>
+        </link>
+
+        <joint name="${prefix}_${suffix}_passive_wheel_y_frame_joint" type="continuous">
+            <axis xyz="0.0 1.0 0.0" />
+            <limit effort="8.85" velocity="10.0" />
+            <parent link="${prefix}_${suffix}_passive_wheel_x_frame" />
+            <child link="${prefix}_${suffix}_passive_wheel_y_frame" />
+        </joint>
+
+        <link name="${prefix}_${suffix}_passive_wheel_y_frame">
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.015"/>
+            </inertial>
+        </link>
+
+        <joint name="${prefix}_${suffix}_passive_wheel_z_joint" type="continuous">
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="8.85" velocity="10.0" />
+            <parent link="${prefix}_${suffix}_passive_wheel_y_frame" />
+            <child link="${prefix}_${suffix}_passive_wheel_z_link" />
+        </joint>
+
+        <link name="${prefix}_${suffix}_passive_wheel_z_link">
+            <visual>
+                <geometry>
+                    <sphere radius="${passive_wheel_radius}" />
+                </geometry>
+                <material name="wheel" />
+            </visual>
+            <collision>
+                <geometry>
+                    <sphere radius="${passive_wheel_radius}" />
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.2"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.015" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.015"/>
+            </inertial>
+        </link>
+    </xacro:macro>
+
+    <!-- base -->
+    <xacro:macro name="hsrb_base" params="prefix robot_namespace">
+        <link name="base_footprint"/>
+
+        <joint name="${prefix}_footprint_joint" type="fixed">
+            <parent link="base_footprint" />
+            <child link="${prefix}_link" />
+        </joint>
+
+        <link name="${prefix}_link">
+            <inertial>
+                <mass value="50.00"/>  <!-- use dummy weight to stabilize gazebo move base (real value: 11.017971)-->
+                <origin xyz="-0.025978 -0.005498 0.17633"/>
+                <inertia ixx="0.3742" ixy="0.000434172172" ixz="0.03088"
+                    iyy="0.3436" iyz="0.01775" izz="0.1509"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.dae" />
+                </geometry>
+            </visual>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.dae" />
+                </geometry>
+            </visual>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/base_v2/base.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_roll_joint" type="continuous">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="${roll_joint_max_effort}" velocity="${roll_joint_max_velocity}" />
+            <parent link="${prefix}_link" />
+            <child link="${prefix}_roll_link" />
+            <dynamics damping="0.7"/>
+        </joint>
+
+        <link name="${prefix}_roll_link">
+            <inertial>
+                <origin xyz="-0.01948200 0.00219100 0.07101300" />
+                <mass value="10.239419"/>
+                <inertia
+                    ixx="0.07671000"  ixy="-0.01005000"  ixz="0.00174900"
+                    iyy="0.09057000" iyz="0.00154900" izz="0.14500000" />
+            </inertial>
+        </link>
+
+
+        <!-- wheels -->
+        <xacro:hsrb_drive_wheel prefix="${prefix}" suffix="r" parent="${prefix}_roll_link">
+            <origin
+                xyz="${-drive_wheel_offset_x} ${-drive_wheel_offset_y} ${drive_wheel_radius}"
+                rpy="0.0 0.0 0.0" />
+        </xacro:hsrb_drive_wheel>
+
+        <xacro:hsrb_drive_wheel prefix="${prefix}" suffix="l" parent="${prefix}_roll_link">
+            <origin
+                xyz="${-drive_wheel_offset_x} ${drive_wheel_offset_y} ${drive_wheel_radius}"
+                rpy="0.0 0.0 0.0" />
+        </xacro:hsrb_drive_wheel>
+
+        <xacro:hsrb_passive_wheel prefix="${prefix}" suffix="r" parent="${prefix}_roll_link">
+            <origin xyz="${passive_wheel_offset_x}
+                ${-passive_wheel_offset_y}
+                ${passive_wheel_radius}"
+                rpy="0.0 0.0 0.0" />
+        </xacro:hsrb_passive_wheel>
+
+        <xacro:hsrb_passive_wheel prefix="${prefix}" suffix="l" parent="${prefix}_roll_link">
+            <origin xyz="${passive_wheel_offset_x}
+                ${passive_wheel_offset_y}
+                ${passive_wheel_radius}"
+                rpy="0.0 0.0 0.0" />
+        </xacro:hsrb_passive_wheel>
+
+        <xacro:laser
+            prefix="${prefix}"
+            robot_namespace="${robot_namespace}"
+            parent="${prefix}_link">
+            <origin xyz="0.1675 0.0 0.1844" rpy="0.0 0.0 0.0" />
+        </xacro:laser>
+
+        <xacro:imu_sensor prefix="${prefix}" robot_namespace="${robot_namespace}" parent="${prefix}_link">
+            <origin xyz="0.0005 0.1296 0.181" rpy="${pi} 0.0 0.0" />
+        </xacro:imu_sensor>
+
+        <xacro:hsrb_base_gazebo prefix="${prefix}"/>
+        <xacro:hsrb_base_transmission prefix="${prefix}"/>
+    </xacro:macro>
+</robot>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) 2017, Toyota Motor Corporation
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Toyota Motor Corporation nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot name="hsrb"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:xacro="http://www.ros.org/wiki.xacro">
+
+    <!-- common xacro -->
+    <xacro:include filename="$(find hsr_description)/urdf/common.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/materials.urdf.xacro" />
+
+    <!-- links and joints -->
+    <xacro:include filename="$(find hsr_description)/urdf/base_v2/base.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/torso_v0/torso.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/head_v2/head.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/arm_v0/arm.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/wrist_v0/wrist.urdf.xacro" />
+    <xacro:include filename="$(find hsr_description)/urdf/hand_v0/hand.urdf.xacro" />
+
+    <!-- constant -->
+    <xacro:property name="robot_name" value="hsrb"/>
+
+    <!-- create robot -->
+    <xacro:hsrb_base prefix="base" robot_namespace="${robot_name}"/>
+
+    <xacro:hsrb_torso prefix="torso" parent="base_link" mimic_joint="arm_lift_joint">
+        <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0"/>
+    </xacro:hsrb_torso>
+
+    <xacro:hsrb_head prefix="head" parent="torso_lift_link">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </xacro:hsrb_head>
+
+    <xacro:hsrb_arm prefix="arm" parent="base_link">
+        <origin xyz="0.0 0.0 0.340" rpy="0.0 0.0 0.0"/>
+    </xacro:hsrb_arm>
+
+    <xacro:hsrb_wrist prefix="wrist" parent="arm_roll_link" robot_namespace="${robot_name}">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+    </xacro:hsrb_wrist>
+
+    <xacro:hsrb_hand prefix="hand" parent="wrist_roll_link">
+        <origin xyz="0.012 0.0 0.1405" rpy="0.0 0.0 ${pi}"/>
+    </xacro:hsrb_hand>
+
+    <gazebo>
+        <plugin name="${robot_name}_ros_control" filename="lib${robot_name}_gazebo_ros_control.so">
+            <robotNamespace>${robot_name}</robotNamespace>
+        </plugin>
+
+        <plugin name="${robot_name}_p3d_ground_truth" filename="libgazebo_ros_p3d.so">
+            <robotNamespace>${robot_name}</robotNamespace>
+            <bodyName>base_footprint</bodyName>
+            <topicName>odom_ground_truth</topicName>
+            <frameName>map</frameName>
+            <updateRate>30</updateRate>
+        </plugin>
+    </gazebo>
+</robot>

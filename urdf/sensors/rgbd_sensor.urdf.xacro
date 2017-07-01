@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot name="hsrb" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/rgbd_sensor.gazebo.xacro"/>
+
+    <!-- rgbd_sensor -->
+    <xacro:macro name="rgbd_sensor" params="prefix parent robot_namespace sensor_name *origin">
+        <joint name="${prefix}_${sensor_name}_joint" type="fixed">
+            <insert_block name="origin" />
+            <parent link="${parent}"/> <child link="${prefix}_${sensor_name}_link"/>
+        </joint>
+
+        <link name="${prefix}_${sensor_name}_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/sensors/rgbd_light.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/sensors/rgbd.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_rgbd_sensor_gazebo_frame_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="${pi/2.0} ${-pi/2.0} 0.0"/>
+            <parent link="${prefix}_${sensor_name}_link"/>
+            <child link="${prefix}_${sensor_name}_gazebo_frame"/>
+        </joint>
+        `
+        <link name="${prefix}_${sensor_name}_gazebo_frame"></link>
+
+        <xacro:rgbd_sensor_gazebo
+            robot_namespace="${robot_namespace}"
+            sensor_name="${prefix}_${sensor_name}"
+            parent_frame="${prefix}_${sensor_name}_gazebo_frame"
+            topic_frame_id="${prefix}_${sensor_name}_rgb_frame" />
+    </xacro:macro>
+
+</robot>

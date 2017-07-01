@@ -1,0 +1,98 @@
+<?xml version="1.0" ?>
+<!--                                                                                                         
+Copyright (c) 2017, Toyota Motor Corporation                                                                 
+All rights reserved.                                                                                         
+                                                                                                             
+Redistribution and use in source and binary forms, with or without                                           
+modification, are permitted provided that the following conditions are met:                                  
+                                                                                                             
+ * Redistributions of source code must retain the above copyright notice,                                    
+   this list of conditions and the following disclaimer.                                                     
+ * Redistributions in binary form must reproduce the above copyright                                         
+   notice, this list of conditions and the following disclaimer in the                                       
+   documentation and/or other materials provided with the distribution.                                      
+ * Neither the name of Toyota Motor Corporation nor the names of its                                         
+   contributors may be used to endorse or promote products derived from                                      
+   this software without specific prior written permission.                                                  
+                                                                                                             
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
+POSSIBILITY OF SUCH DAMAGE.                                                                                  
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="hsrb">
+    <!--
+    ASUS Xtion PRO LIVE
+    Specs from:
+    http://www.asus.com/Multimedia/Xtion_PRO_LIVE/#specifications
+    -->
+
+    <xacro:property name="XtionWidth" value="0.018"/>
+    <xacro:property name="XtionHeight" value="0.035"/>
+    <xacro:property name="XtionDepth" value="0.05"/>
+
+    <xacro:property name="XtionMass" value="0.25"/>
+
+    <xacro:property name="XtionImageWidth" value="640"/>
+    <xacro:property name="XtionImageHeight" value="480"/>
+    <xacro:property name="XtionFieldOfView" value="1.01229097"/>
+    <xacro:property name="XtionMinDistance" value="0.2"/>
+    <xacro:property name="XtionMaxDistance" value="5"/>
+    <xacro:property name="XtionFrameRate" value="30"/>
+
+    <xacro:macro name="rgbd_sensor_gazebo" params="robot_namespace sensor_name parent_frame topic_frame_id">
+        <gazebo reference="${parent_frame}">
+            <sensor type="depth" name="openni_camera_camera">
+                <always_on>0</always_on>
+                <update_rate>30</update_rate>
+                <visualize>true</visualize>
+                <camera>
+                    <horizontal_fov>1.047</horizontal_fov>
+                    <image>
+                        <width>640</width>
+                        <height>480</height>
+                        <format>B8G8R8</format>
+                    </image>
+                    <depth_camera>
+                    </depth_camera>
+                    <clip>
+                        <near>0.1</near>
+                        <far>100</far>
+                    </clip>
+                </camera>
+                <plugin name="${sensor_name}_controller" filename="libgazebo_ros_openni_kinect.so">
+                    <alwaysOn>true</alwaysOn>
+                    <baseline>0.2</baseline>
+                    <updateRate>1.0</updateRate>
+                    <cameraName>${sensor_name}</cameraName>
+                    <frameName>${topic_frame_id}</frameName>
+                    <imageTopicName>/${robot_namespace}/${sensor_name}/rgb/image_rect_color</imageTopicName>
+                    <cameraInfoTopicName>/${robot_namespace}/${sensor_name}/rgb/camera_info</cameraInfoTopicName>
+                    <depthImageTopicName>/${robot_namespace}/${sensor_name}/depth_registered/image_rect_raw</depthImageTopicName>
+                    <pointCloudTopicName>/${robot_namespace}/${sensor_name}/depth_registered/rectified_points</pointCloudTopicName>
+                    <depthImageCameraInfoTopicName>/${robot_namespace}/${sensor_name}/depth_registered/camera_info</depthImageCameraInfoTopicName>
+                    <pointCloudCutoff>0.5</pointCloudCutoff>
+                    <pointCloudCutoffMax>9.2</pointCloudCutoffMax>
+                    <distortionK1>0.0</distortionK1>
+                    <distortionK2>0.0</distortionK2>
+                    <distortionK3>0.0</distortionK3>
+                    <distortionT1>0.0</distortionT1>
+                    <distortionT2>0.0</distortionT2>
+                    <CxPrime>0.0</CxPrime>
+                    <Cx>0.0</Cx>
+                    <Cy>0.0</Cy>
+                    <focalLength>0.0</focalLength>
+                    <hackBaseline>0</hackBaseline>
+                </plugin>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+
+</robot>

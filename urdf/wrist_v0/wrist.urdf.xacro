@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!--
+Copyright (c) 2017, Toyota Motor Corporation
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Toyota Motor Corporation nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+-->
+<robot name="wrist" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find hsr_description)/urdf/wrist_v0/wrist.transmission.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/wrist_v0/wrist.gazebo.xacro"/>
+    <xacro:include filename="$(find hsr_description)/urdf/sensors/ft_sensor.urdf.xacro"/>
+
+    <!-- wrist -->
+    <xacro:macro name="hsrb_wrist" params="prefix robot_namespace parent *origin">
+        <joint name="${prefix}_flex_joint" type="revolute">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 -1.0 0.0" />
+            <limit effort="100.0" velocity="1.5" lower="-1.92" upper="1.22" />
+            <parent link="${parent}" />
+            <child link="${prefix}_flex_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_flex_link">
+            <inertial>
+                <mass value="0.681225"/>
+                <origin xyz="0.000131 -0.003929 0.00217"/>
+                <inertia ixx="0.000074353558" ixy="0.000000494515" ixz="0.000000022937"
+                    iyy="0.000038432887" iyz="-0.00000255576" izz="0.000064680918"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.dae" />
+                </geometry>
+                <material name="body_sub" />
+            </visual>
+            <visual>
+                <origin xyz="0.0 0.0 0.04" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.017" length="0.02" />
+                </geometry>
+                <material name="body_sub" />
+            </visual>
+
+            <collision>
+                <origin xyz="0.0 0.0 0.03" rpy="0.0 0.0 0.0"/>
+                <geometry>
+                    <cylinder radius="0.017" length="0.04" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_roll_joint" type="revolute">
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <axis xyz="0.0 0.0 1.0" />
+            <limit effort="100.0" velocity="1.5" lower="-1.92" upper="3.67" />
+            <parent link="${prefix}_flex_link" />
+            <child link="${prefix}_roll_link" />
+            <dynamics damping="1.0"/>
+        </joint>
+
+        <link name="${prefix}_roll_link">
+            <inertial>
+                <mass value="0.761692"/>
+                <origin xyz="-0.001416 -0.001547 0.081689"/>
+                <inertia ixx="0.000805633819" ixy="-0.000014431758" ixz="0.000028204659"
+                    iyy="0.000768077165" iyz="0.000022460226" izz="0.000453406611"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
+                </geometry>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.stl" />
+                </geometry>
+            </collision>
+        </link>
+
+        <xacro:ft_sensor
+            prefix="${prefix}"
+            robot_namespace="${robot_namespace}"
+            parent="${prefix}_roll_link"
+            joint_name="${prefix}_roll_joint">
+            <origin xyz="0.0 0.0 0.0735" rpy="${pi} 0.0 0.0"/>
+        </xacro:ft_sensor>
+
+        <xacro:hsrb_wrist_gazebo prefix="${prefix}"/>
+        <xacro:hsrb_wrist_transmission prefix="${prefix}"/>
+    </xacro:macro>
+</robot>

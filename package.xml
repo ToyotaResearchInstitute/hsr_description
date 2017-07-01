@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>hsr_description</name>
+  <version>1.0.0</version>
+  <description>URDF files for Toyota HSR</description>
+
+  <maintainer email="koji_terada@mail.toyota.co.jp">Koji Terada</maintainer>
+  <maintainer email="akiyoshi_ochiai@tri.global">Akiyoshi Ochiai</maintainer>
+
+  <license>BSD 3-clause Clear License</license>
+
+  <url type="website">None</url>
+
+  <author>Akiyoshi Ochiai</author>
+  <author>Keisuke Takeshita</author>
+  <author>Koji Terada</author>
+  <author>Tamaki Nishino</author>
+  <author>Kazuto Murase</author>
+  <author>Yuto Mori</author>
+  <author>Yoshimi Iyoda</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>xacro</depend>
+  <depend>rosbash</depend>
+
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>hsr_meshes</exec_depend>
+  <exec_depend>rviz</exec_depend>
+</package>
