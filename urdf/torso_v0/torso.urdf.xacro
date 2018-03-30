@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/torso_v0/torso.gazebo.xacro"/>
 
     <!-- torso -->
-    <xacro:macro name="hsrb_torso" params="prefix parent mimic_joint *origin">
+    <xacro:macro name="hsrb_torso" params="prefix parent mimic_joint *origin use_collada:=true">
         <joint name="${prefix}_lift_joint" type="prismatic">
             <insert_block name="origin" />
             <!-- <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0" /> -->
@@ -52,7 +52,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/torso_v0/torso_light.dae" />
+                    <xacro:if value="${use_collada}">
+                        <mesh filename="package://hsr_meshes/meshes/torso_v0/torso_light.dae" />
+                    </xacro:if>
+                    <xacro:unless value="${use_collada}">
+                        <mesh filename="package://hsr_meshes/meshes/torso_v0/torso_light.obj" />
+                    </xacro:unless>
                 </geometry>
             </visual>
 

@@ -3,9 +3,11 @@
     <!-- args -->
     <arg name="gui" default="true" />
     <arg name="robot" default="hsrb4s" />
+    <arg name="use_collada" default="true" />
 
     <!-- load robot -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find hsr_description)/robots/$(arg robot).urdf.xacro'" />
+    <param if="$(arg use_collada)" name="robot_description" command="$(find xacro)/xacro.py '$(find hsr_description)/robots/$(arg robot).urdf.xacro'" />
+    <param unless="$(arg use_collada)" name="robot_description" command="$(find xacro)/xacro.py '$(find hsr_description)/robots/$(arg robot)_obj.urdf.xacro'" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 

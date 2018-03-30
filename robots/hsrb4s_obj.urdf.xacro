@@ -49,25 +49,25 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:property name="robot_name" value="hsrb"/>
 
     <!-- create robot -->
-    <xacro:hsrb_base prefix="base" robot_namespace="${robot_name}"/>
+    <xacro:hsrb_base prefix="base" robot_namespace="${robot_name}" use_collada="false"/>
 
-    <xacro:hsrb_torso prefix="torso" parent="base_link" mimic_joint="arm_lift_joint">
+    <xacro:hsrb_torso prefix="torso" parent="base_link" mimic_joint="arm_lift_joint" use_collada="false">
         <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_torso>
 
-    <xacro:hsrb_head prefix="head" parent="torso_lift_link">
+    <xacro:hsrb_head prefix="head" parent="torso_lift_link" use_collada="false">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_head>
 
-    <xacro:hsrb_arm prefix="arm" parent="base_link">
+    <xacro:hsrb_arm prefix="arm" parent="base_link" use_collada="false">
         <origin xyz="0.0 0.0 0.340" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_arm>
 
-    <xacro:hsrb_wrist prefix="wrist" parent="arm_roll_link" robot_namespace="${robot_name}">
+    <xacro:hsrb_wrist prefix="wrist" parent="arm_roll_link" robot_namespace="${robot_name}" use_collada="false">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_wrist>
 
-    <xacro:hsrb_hand prefix="hand" parent="wrist_roll_link">
+    <xacro:hsrb_hand prefix="hand" parent="wrist_roll_link" use_collada="false">
         <origin xyz="0.012 0.0 0.1405" rpy="0.0 0.0 ${pi}"/>
     </xacro:hsrb_hand>
 
