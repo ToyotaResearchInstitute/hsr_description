@@ -37,7 +37,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/sensors/wide_camera.urdf.xacro"/>
 
     <!-- head -->
-    <xacro:macro name="hsrb_head" params="prefix parent *origin use_collada:=true">
+    <xacro:macro name="hsrb_head" params="prefix parent *origin">
         <joint name="${prefix}_pan_joint" type="revolute">
             <insert_block name="origin" />
             <axis xyz="0.0 0.0 1.0" />
@@ -56,12 +56,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
@@ -90,32 +90,32 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.obj" />
-                    </xacro:unless>
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <collision>
@@ -131,19 +131,19 @@ POSSIBILITY OF SUCH DAMAGE.
         </link>
 
         <!-- cameras -->
-        <xacro:rgb_sensor prefix="${prefix}_l_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.00" use_collada="${use_collada}">
+        <xacro:rgb_sensor prefix="${prefix}_l_stereo" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" baseline="0.00">
             <origin xyz="0.02 0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgb_sensor>
 
-        <xacro:rgb_sensor prefix="${prefix}_r_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.14" use_collada="${use_collada}">
+        <xacro:rgb_sensor prefix="${prefix}_r_stereo" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" baseline="0.14">
             <origin xyz="0.02 -0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgb_sensor>
 
-        <xacro:wide_camera prefix="${prefix}_center" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" rpy="${pi/2.0} ${-pi/2.0} 0.0" >
+        <xacro:wide_camera prefix="${prefix}_center" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" rpy="${pi/2.0} ${-pi/2.0} 0.0" >
             <origin xyz="0.0195 0.0 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:wide_camera>
 
-        <xacro:rgbd_sensor prefix="${prefix}" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" sensor_name="rgbd_sensor" use_collada="${use_collada}">
+        <xacro:rgbd_sensor prefix="${prefix}" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" sensor_name="rgbd_sensor">
             <origin xyz="-0.079796 0.022 0.215172" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgbd_sensor>
 

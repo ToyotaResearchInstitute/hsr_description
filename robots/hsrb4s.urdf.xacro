@@ -45,11 +45,15 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/wrist_v0/wrist.urdf.xacro" />
     <xacro:include filename="$(find hsr_description)/urdf/hand_v0/hand.urdf.xacro" />
 
+    <!-- This switches a format of mesh files for visual property -->
+    <xacro:arg name="use_obj_for_visual" default="false" />
+    <xacro:property name="g_use_obj_for_visual" value="$(arg use_obj_for_visual)"/>
+
     <!-- constant -->
-    <xacro:property name="robot_name" value="hsrb"/>
+    <xacro:property name="g_robot_name" value="hsrb"/>
 
     <!-- create robot -->
-    <xacro:hsrb_base prefix="base" robot_namespace="${robot_name}"/>
+    <xacro:hsrb_base prefix="base" robot_namespace="${g_robot_name}"/>
 
     <xacro:hsrb_torso prefix="torso" parent="base_link" mimic_joint="arm_lift_joint">
         <origin xyz="0.0 0.0 0.752" rpy="0.0 0.0 0.0"/>
@@ -63,7 +67,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <origin xyz="0.0 0.0 0.340" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_arm>
 
-    <xacro:hsrb_wrist prefix="wrist" parent="arm_roll_link" robot_namespace="${robot_name}">
+    <xacro:hsrb_wrist prefix="wrist" parent="arm_roll_link" robot_namespace="${g_robot_name}">
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     </xacro:hsrb_wrist>
 
@@ -72,12 +76,12 @@ POSSIBILITY OF SUCH DAMAGE.
     </xacro:hsrb_hand>
 
     <gazebo>
-        <plugin name="${robot_name}_ros_control" filename="lib${robot_name}_gazebo_ros_control.so">
-            <robotNamespace>${robot_name}</robotNamespace>
+        <plugin name="${g_robot_name}_ros_control" filename="lib${g_robot_name}_gazebo_ros_control.so">
+            <robotNamespace>${g_robot_name}</robotNamespace>
         </plugin>
 
-        <plugin name="${robot_name}_p3d_ground_truth" filename="libgazebo_ros_p3d.so">
-            <robotNamespace>${robot_name}</robotNamespace>
+        <plugin name="${g_robot_name}_p3d_ground_truth" filename="libgazebo_ros_p3d.so">
+            <robotNamespace>${g_robot_name}</robotNamespace>
             <bodyName>base_footprint</bodyName>
             <topicName>odom_ground_truth</topicName>
             <frameName>map</frameName>

@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/arm_v0/arm.gazebo.xacro"/>
 
     <!-- arm -->
-    <xacro:macro name="hsrb_arm" params="prefix parent *origin use_collada:=true">
+    <xacro:macro name="hsrb_arm" params="prefix parent *origin">
         <joint name="${prefix}_lift_joint" type="prismatic">
             <insert_block name="origin" />
             <axis xyz="0.0 0.0 1.0" />
@@ -52,12 +52,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
@@ -86,12 +86,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex_light.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex_light.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex_light.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
@@ -120,12 +120,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll_light.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll_light.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll_light.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 

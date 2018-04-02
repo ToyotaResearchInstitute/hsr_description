@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/sensors/ft_sensor.urdf.xacro"/>
 
     <!-- wrist -->
-    <xacro:macro name="hsrb_wrist" params="prefix robot_namespace parent *origin use_collada:=true">
+    <xacro:macro name="hsrb_wrist" params="prefix robot_namespace parent *origin">
         <joint name="${prefix}_flex_joint" type="revolute">
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
             <axis xyz="0.0 -1.0 0.0" />
@@ -53,12 +53,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.obj" />
+                    </xacro:if>
                 </geometry>
                 <material name="body_sub" />
             </visual>
@@ -96,12 +96,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 

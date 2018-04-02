@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/sensors/rgbd_sensor.gazebo.xacro"/>
 
     <!-- rgbd_sensor -->
-    <xacro:macro name="rgbd_sensor" params="prefix parent robot_namespace sensor_name *origin use_collada:=true">
+    <xacro:macro name="rgbd_sensor" params="prefix parent robot_namespace sensor_name *origin">
         <joint name="${prefix}_${sensor_name}_joint" type="fixed">
             <insert_block name="origin" />
             <parent link="${parent}"/> <child link="${prefix}_${sensor_name}_link"/>
@@ -41,12 +41,12 @@ POSSIBILITY OF SUCH DAMAGE.
             <visual>
                 <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/sensors/rgbd_light.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/sensors/rgbd_light.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/sensors/rgbd_light.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 

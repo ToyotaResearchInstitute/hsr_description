@@ -32,7 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
     <xacro:include filename="$(find hsr_description)/urdf/sensors/laser.gazebo.xacro"/>
 
     <!-- range sensor -->
-    <xacro:macro name="laser" params="prefix robot_namespace parent *origin use_collada:=true">
+    <xacro:macro name="laser" params="prefix robot_namespace parent *origin">
         <joint name="${prefix}_range_sensor_joint" type="fixed">
             <insert_block name="origin" />
             <parent link="${parent}" />
@@ -42,12 +42,12 @@ POSSIBILITY OF SUCH DAMAGE.
         <link name="${prefix}_range_sensor_link">
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/sensors/laser.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/sensors/laser.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/sensors/laser.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 

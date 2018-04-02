@@ -145,7 +145,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </xacro:macro>
 
     <!-- base -->
-    <xacro:macro name="hsrb_base" params="prefix robot_namespace use_collada:=true">
+    <xacro:macro name="hsrb_base" params="prefix robot_namespace">
         <link name="base_footprint"/>
 
         <joint name="${prefix}_footprint_joint" type="fixed">
@@ -162,32 +162,32 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.obj" />
-                    </xacro:unless>
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/base_v2/body_light.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <xacro:if value="${use_collada}">
+                    <xacro:unless value="${g_use_obj_for_visual}">
                         <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.dae" />
-                    </xacro:if>
-                    <xacro:unless value="${use_collada}">
-                        <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.obj" />
                     </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
@@ -248,8 +248,7 @@ POSSIBILITY OF SUCH DAMAGE.
         <xacro:laser
             prefix="${prefix}"
             robot_namespace="${robot_namespace}"
-            parent="${prefix}_link"
-            use_collada="${use_collada}">
+            parent="${prefix}_link">
             <origin xyz="0.1675 0.0 0.1844" rpy="0.0 0.0 0.0" />
         </xacro:laser>
 
