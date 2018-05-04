@@ -1,31 +1,31 @@
 <?xml version="1.0"?>
-<!--                                                                                                         
-Copyright (c) 2017, Toyota Motor Corporation                                                                 
-All rights reserved.                                                                                         
-                                                                                                             
-Redistribution and use in source and binary forms, with or without                                           
-modification, are permitted provided that the following conditions are met:                                  
-                                                                                                             
- * Redistributions of source code must retain the above copyright notice,                                    
-   this list of conditions and the following disclaimer.                                                     
- * Redistributions in binary form must reproduce the above copyright                                         
-   notice, this list of conditions and the following disclaimer in the                                       
-   documentation and/or other materials provided with the distribution.                                      
- * Neither the name of Toyota Motor Corporation nor the names of its                                         
-   contributors may be used to endorse or promote products derived from                                      
-   this software without specific prior written permission.                                                  
-                                                                                                             
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"                                  
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE                                    
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE                                   
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE                                     
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR                                          
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF                                         
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS                                     
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN                                      
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)                                      
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE                                   
-POSSIBILITY OF SUCH DAMAGE.                                                                                  
+<!--
+Copyright (c) 2017, Toyota Motor Corporation
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of Toyota Motor Corporation nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 -->
 <robot name="head" xmlns:xacro="http://ros.org/wiki/xacro">
 
@@ -56,7 +56,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
@@ -85,17 +90,32 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_tilt.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet_base.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
             <collision>
@@ -111,19 +131,19 @@ POSSIBILITY OF SUCH DAMAGE.
         </link>
 
         <!-- cameras -->
-        <xacro:rgb_sensor prefix="${prefix}_l_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.00">
+        <xacro:rgb_sensor prefix="${prefix}_l_stereo" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" baseline="0.00">
             <origin xyz="0.02 0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgb_sensor>
 
-        <xacro:rgb_sensor prefix="${prefix}_r_stereo" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" baseline="0.14">
+        <xacro:rgb_sensor prefix="${prefix}_r_stereo" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" baseline="0.14">
             <origin xyz="0.02 -0.07 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgb_sensor>
 
-        <xacro:wide_camera prefix="${prefix}_center" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" rpy="${pi/2.0} ${-pi/2.0} 0.0" >
+        <xacro:wide_camera prefix="${prefix}_center" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" rpy="${pi/2.0} ${-pi/2.0} 0.0" >
             <origin xyz="0.0195 0.0 0.061" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:wide_camera>
 
-        <xacro:rgbd_sensor prefix="${prefix}" parent="${prefix}_tilt_link" robot_namespace="${robot_name}" sensor_name="rgbd_sensor">
+        <xacro:rgbd_sensor prefix="${prefix}" parent="${prefix}_tilt_link" robot_namespace="${g_robot_name}" sensor_name="rgbd_sensor">
             <origin xyz="-0.079796 0.022 0.215172" rpy="${-pi/2.0} 0.0 ${-pi/2.0}"/>
         </xacro:rgbd_sensor>
 

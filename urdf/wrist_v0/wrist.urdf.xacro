@@ -53,7 +53,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_flex.obj" />
+                    </xacro:if>
                 </geometry>
                 <material name="body_sub" />
             </visual>
@@ -91,7 +96,12 @@ POSSIBILITY OF SUCH DAMAGE.
             </inertial>
             <visual>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
+                    <xacro:unless value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_visual}">
+                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.obj" />
+                    </xacro:if>
                 </geometry>
             </visual>
 
