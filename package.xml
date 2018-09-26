@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>hsr_description</name>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
   <description>URDF files for Toyota HSR</description>
 
   <maintainer email="koji_terada@mail.toyota.co.jp">Koji Terada</maintainer>

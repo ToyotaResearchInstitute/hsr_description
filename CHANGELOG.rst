@@ -2,8 +2,8 @@
 Changelog for package hsr_description
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.0 (2018-09-25)
+------------------
 * Support Wavefront OBJ format meshes
   Fixed CMakeLists for install
 * Initial commit
