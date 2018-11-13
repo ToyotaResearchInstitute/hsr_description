@@ -725,9 +725,6 @@ POSSIBILITY OF SUCH DAMAGE.
     <parent link="head_rgbd_sensor_link"/>
     <child link="head_rgbd_sensor_gazebo_frame"/>
   </joint>
-  
-        `
-        
   <link name="head_rgbd_sensor_gazebo_frame"/>
   <gazebo reference="head_rgbd_sensor_gazebo_frame">
     <sensor name="openni_camera_camera" type="depth">
