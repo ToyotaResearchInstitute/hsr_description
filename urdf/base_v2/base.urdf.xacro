@@ -67,7 +67,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <geometry>
                     <cylinder radius="${drive_wheel_radius}" length="${drive_wheel_width}" />
                 </geometry>
-                <material name="wheel" />
+                <material name="wheel">
+                  <color rgba="0.2 0.2 0.2 1.0"/>
+                </material>
             </visual>
             <collision>
                 <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
@@ -129,7 +131,9 @@ POSSIBILITY OF SUCH DAMAGE.
                 <geometry>
                     <sphere radius="${passive_wheel_radius}" />
                 </geometry>
-                <material name="wheel" />
+                <material name="wheel">
+                  <color rgba="0.2 0.2 0.2 1.0"/>
+                </material>
             </visual>
             <collision>
                 <geometry>
@@ -169,6 +173,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <mesh filename="package://hsr_meshes/meshes/base_v2/base_light.obj" />
                     </xacro:if>
                 </geometry>
+                <material name="body_sub">
+                  <color rgba="0.3333 0.3333 0.3333 1.0"/>
+                </material>
             </visual>
             <visual>
                 <geometry>
@@ -189,6 +196,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <mesh filename="package://hsr_meshes/meshes/base_v2/torso_base.obj" />
                     </xacro:if>
                 </geometry>
+                <material name="body_sub">
+                  <color rgba="0.3333 0.3333 0.3333 1.0"/>
+                </material>
             </visual>
 
             <collision>

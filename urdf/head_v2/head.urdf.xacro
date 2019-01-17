@@ -63,6 +63,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.obj" />
                     </xacro:if>
                 </geometry>
+                <material name="tablet">
+                  <color rgba="0.1 0.1 0.2 1.0"/>
+                </material>
             </visual>
 
             <collision>
@@ -97,6 +100,9 @@ POSSIBILITY OF SUCH DAMAGE.
                         <mesh filename="package://hsr_meshes/meshes/head_v1/head_upper.obj" />
                     </xacro:if>
                 </geometry>
+                <material name="tablet">
+                  <color rgba="0.1 0.1 0.2 1.0"/>
+                </material>
             </visual>
             <visual>
                 <geometry>

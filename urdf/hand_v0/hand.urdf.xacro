@@ -100,6 +100,12 @@ POSSIBILITY OF SUCH DAMAGE.
             <child link="${prefix}_motor_dummy_link" />
             <dynamics damping="1.0"/>
         </joint>
+         <joint name="gripper_tool_joint" type="fixed">
+         <origin rpy="0.0 0.0 -80.14159265359" xyz="0.012 0.0 0.075"/>
+         <parent link="${prefix}_palm_link" />
+          <child link="gripper_tool_frame"/>
+        </joint>
+        <link name="gripper_tool_frame"/>
 
         <!-- dummy link -->
         <xacro:hsrb_gripper_dummy_link name="${prefix}_motor_dummy_link" />
