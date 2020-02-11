@@ -6,7 +6,7 @@
     <arg name="use_obj" default="false" />
 
     <!-- load robot -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find hsr_description)/robots/$(arg robot).urdf.xacro' use_obj_for_visual:=$(arg use_obj)" />
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find hsr_description)/robots/$(arg robot).urdf.xacro' use_obj_for_visual:=$(arg use_obj) use_obj_for_collision:=$(arg use_obj)" />
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
 
