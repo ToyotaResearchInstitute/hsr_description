@@ -193,8 +193,13 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/base_v2/base.stl" />
-                </geometry>
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/base_v2/base.stl" />
+	            </xacro:unless>
+		    <xacro:if value="${g_use_obj_for_collision}">
+			<mesh filename="package://hsr_meshes/meshes/base_v2/base.collision.obj" />
+                    </xacro:if>
+		</geometry>
             </collision>
         </link>
 

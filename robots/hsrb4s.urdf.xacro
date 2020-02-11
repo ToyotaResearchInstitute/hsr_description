@@ -47,7 +47,11 @@ POSSIBILITY OF SUCH DAMAGE.
 
     <!-- This switches a format of mesh files for visual property -->
     <xacro:arg name="use_obj_for_visual" default="false" />
+    <xacro:arg name="use_obj_for_collision" default="false" />
+
     <xacro:property name="g_use_obj_for_visual" value="$(arg use_obj_for_visual)"/>
+
+    <xacro:property name="g_use_obj_for_collision" value="$(arg use_obj_for_collision)"/>
 
     <!-- constant -->
     <xacro:property name="g_robot_name" value="hsrb"/>

@@ -86,7 +86,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/hand_v0/palm.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/palm.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/palm.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -215,7 +220,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/hand_v0/l_proximal.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/l_proximal.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/l_proximal.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -230,8 +240,8 @@ POSSIBILITY OF SUCH DAMAGE.
                 <mass value="0.027731"/>
                 <origin xyz="0.011116 0.005679 0.017532"/>
                 <inertia
-                    ixx="0.000004451952" ixy="-0.000000617574" ixz="0.000000503765"
-                    iyy="0.000000503765" iyz="-0.000000435048" izz="0.000004456764"/>
+                    ixx="0.000004451952" ixy="0.0" ixz="0.0"
+                    iyy="0.000000503765" iyz="0.0" izz="0.000004456764"/>
             </inertial>
             <visual>
                 <geometry>
@@ -247,7 +257,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/hand_v0/l_distal.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/l_distal.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/l_distal.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -313,7 +328,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/hand_v0/r_proximal.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/r_proximal.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/r_proximal.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -345,7 +365,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/hand_v0/r_distal.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/r_distal.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/hand_v0/r_distal.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
