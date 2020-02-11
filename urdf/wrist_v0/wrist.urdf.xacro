@@ -92,22 +92,27 @@ POSSIBILITY OF SUCH DAMAGE.
                 <mass value="0.761692"/>
                 <origin xyz="-0.001416 -0.001547 0.081689"/>
                 <inertia ixx="0.000805633819" ixy="-0.000014431758" ixz="0.000028204659"
-                    iyy="0.000768077165" iyz="0.000022460226" izz="0.000453406611"/>
+                         iyy="0.000768077165" iyz="0.000022460226" izz="0.000453406611"/>
             </inertial>
             <visual>
                 <geometry>
                     <xacro:unless value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
+                       <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.dae" />
                     </xacro:unless>
                     <xacro:if value="${g_use_obj_for_visual}">
-                        <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.obj" />
+                       <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.obj" />
                     </xacro:if>
                 </geometry>
             </visual>
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                      <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                      <mesh filename="package://hsr_meshes/meshes/wrist_v0/wrist_roll.collision.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>

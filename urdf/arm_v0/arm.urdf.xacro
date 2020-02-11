@@ -63,7 +63,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/shoulder.collision.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -80,9 +85,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <link name="${prefix}_flex_link">
             <inertial>
                 <mass value="1.339295"/>
-                <origin xyz="0.000632 0.006404 0.118529"/>
-                <inertia ixx="7.528" ixy="-0.000020284207" ixz="-0.000022947194"
-                    iyy="0.007102" iyz="-0.000091796075" izz="0.001552"/>
+                <origin xyz="-0.000459 0.006583 0.106069"/>
+                <inertia ixx="0.00889053" ixy="0.0" ixz="0.0" iyy="0.00825549" iyz="0.0" izz="0.00190511"/>
             </inertial>
             <visual>
                 <geometry>
@@ -97,7 +101,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_flex.collision.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -131,7 +140,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/arm_v0/arm_roll.collision.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>

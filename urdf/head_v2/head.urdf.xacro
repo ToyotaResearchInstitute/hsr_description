@@ -67,7 +67,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head_pan.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>
@@ -120,12 +125,22 @@ POSSIBILITY OF SUCH DAMAGE.
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/head.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/head.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/head_v1/tablet.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/head_v1/tablet.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>

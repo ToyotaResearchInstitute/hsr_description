@@ -53,7 +53,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
             <collision>
                 <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/sensors/laser.stl" />
+                    <xacro:unless value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/sensors/laser.stl" />
+                    </xacro:unless>
+                    <xacro:if value="${g_use_obj_for_collision}">
+                        <mesh filename="package://hsr_meshes/meshes/sensors/laser.obj" />
+                    </xacro:if>
                 </geometry>
             </collision>
         </link>

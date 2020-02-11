@@ -51,9 +51,14 @@ POSSIBILITY OF SUCH DAMAGE.
             </visual>
 
             <collision>
-                <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
-                <geometry>
-                    <mesh filename="package://hsr_meshes/meshes/sensors/rgbd.stl" />
+               <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+               <geometry>
+                  <xacro:unless value="${g_use_obj_for_collision}">
+                     <mesh filename="package://hsr_meshes/meshes/sensors/rgbd.stl" />
+                  </xacro:unless>
+                  <xacro:if value="${g_use_obj_for_collision}">
+                     <mesh filename="package://hsr_meshes/meshes/sensors/rgbd.obj" />
+                  </xacro:if>
                 </geometry>
             </collision>
         </link>
