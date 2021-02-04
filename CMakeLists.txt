@@ -1,6 +1,6 @@
 # Copyright (C) 2016 Toyota Motor Corporation
 # vim: fileencoding=utf-8 :
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.0.2)
 project(hsr_description)
 
 find_package(catkin REQUIRED COMPONENTS rosbash xacro)

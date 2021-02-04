@@ -64,7 +64,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <collision>
                 <geometry>
                     <xacro:unless value="${g_use_obj_for_collision}">
-                        <mesh filename="package://hsr_meshes/meshes/torso_v0/torso.std" />
+                        <mesh filename="package://hsr_meshes/meshes/torso_v0/torso.stl" />
                     </xacro:unless>
                     <xacro:if value="${g_use_obj_for_collision}">
                         <mesh filename="package://hsr_meshes/meshes/torso_v0/torso.collision.obj" />
