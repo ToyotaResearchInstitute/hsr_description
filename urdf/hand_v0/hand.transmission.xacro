@@ -29,8 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki.xacro">
     <xacro:macro name="hsrb_hand_transmission" params="prefix">
-        <hsrb_effort_joint_transmission joint="${prefix}_motor_joint" reduction="1"/>
-        <hsrb_effort_joint_transmission joint="${prefix}_l_spring_proximal_joint" reduction="1"/>
-        <hsrb_effort_joint_transmission joint="${prefix}_r_spring_proximal_joint" reduction="1"/>
+        <xacro:hsrb_effort_joint_transmission joint="${prefix}_motor_joint" reduction="1"/>
+        <xacro:hsrb_effort_joint_transmission joint="${prefix}_l_spring_proximal_joint" reduction="1"/>
+        <xacro:hsrb_effort_joint_transmission joint="${prefix}_r_spring_proximal_joint" reduction="1"/>
     </xacro:macro>
 </robot>

@@ -29,8 +29,8 @@ POSSIBILITY OF SUCH DAMAGE.
 -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:macro name="hsrb_base_transmission" params="prefix">
-        <hsrb_velocity_joint_transmission joint="${prefix}_r_drive_wheel_joint" reduction="1"/>
-        <hsrb_velocity_joint_transmission joint="${prefix}_l_drive_wheel_joint" reduction="1"/>
-        <hsrb_position_joint_transmission joint="${prefix}_roll_joint" reduction="1"/>
+        <xacro:hsrb_velocity_joint_transmission joint="${prefix}_r_drive_wheel_joint" reduction="1"/>
+        <xacro:hsrb_velocity_joint_transmission joint="${prefix}_l_drive_wheel_joint" reduction="1"/>
+        <xacro:hsrb_position_joint_transmission joint="${prefix}_roll_joint" reduction="1"/>
     </xacro:macro>
 </robot>

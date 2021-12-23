@@ -30,8 +30,8 @@ POSSIBILITY OF SUCH DAMAGE.
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
     <xacro:macro name="hsrb_head_transmission" params="prefix">
-        <hsrb_position_joint_transmission joint="${prefix}_pan_joint" reduction="1"/>
-        <hsrb_position_joint_transmission joint="${prefix}_tilt_joint" reduction="1"/>
+        <xacro:hsrb_position_joint_transmission joint="${prefix}_pan_joint" reduction="1"/>
+        <xacro:hsrb_position_joint_transmission joint="${prefix}_tilt_joint" reduction="1"/>
     </xacro:macro>
 
 </robot>
