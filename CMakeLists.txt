@@ -19,7 +19,7 @@ function(generate_urdf)
     add_custom_command(
         OUTPUT ${_urdf}
         DEPENDS ${_depends}
-	COMMAND ${CATKIN_DEVEL_PREFIX}/env.sh xacro ${_xacro_src} ${ARG_XACRO_ARGS} --inorder > ${_urdf})
+	COMMAND ${CATKIN_DEVEL_PREFIX}/env.sh xacro ${_xacro_src} ${ARG_XACRO_ARGS} > ${_urdf})
     add_custom_target(${PROJECT_NAME}_${_name}${ARG_SUFFIX}_generate_urdf ALL DEPENDS ${_urdf})
 endfunction()
 
