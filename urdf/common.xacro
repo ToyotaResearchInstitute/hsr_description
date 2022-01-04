@@ -31,9 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
   <xacro:arg name="implicit_damping" default="false" />
 
-  <xacro:property name="pi" value="3.14159265359"/>
-
-  <macro name="hsrb_position_joint_transmission" params="joint reduction">
+  <xacro:macro name="hsrb_position_joint_transmission" params="joint reduction">
      <transmission name="${joint}_transmission">
        <type>transmission_interface/SimpleTransmission</type>
        <joint name="${joint}">
@@ -44,9 +42,9 @@ POSSIBILITY OF SUCH DAMAGE.
          <mechanicalReduction>${reduction}</mechanicalReduction>
        </actuator>
      </transmission>
-  </macro>
+  </xacro:macro>
 
-  <macro name="hsrb_effort_joint_transmission" params="joint reduction">
+  <xacro:macro name="hsrb_effort_joint_transmission" params="joint reduction">
      <transmission name="${joint}_transmission">
        <type>transmission_interface/SimpleTransmission</type>
        <joint name="${joint}">
@@ -57,9 +55,9 @@ POSSIBILITY OF SUCH DAMAGE.
          <mechanicalReduction>${reduction}</mechanicalReduction>
        </actuator>
      </transmission>
-  </macro>
+  </xacro:macro>
 
-  <macro name="hsrb_velocity_joint_transmission" params="joint reduction">
+  <xacro:macro name="hsrb_velocity_joint_transmission" params="joint reduction">
       <transmission name="${prefix}_transmission">
           <type>transmission_interface/SimpleTransmission</type>
           <joint name="${joint}">
@@ -70,18 +68,18 @@ POSSIBILITY OF SUCH DAMAGE.
               <mechanicalReduction>${reduction}</mechanicalReduction>
           </actuator>
       </transmission>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_link" params="name gravity collide friction">
+  <xacro:macro name="gazebo_link" params="name gravity collide friction">
     <gazebo reference="${name}">
       <selfCollide>${collide}</selfCollide>
       <gravity>${gravity}</gravity>
       <mu1>${friction}</mu1>
       <mu2>${friction}</mu2>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_link_flat_black" params="name gravity collide friction">
+  <xacro:macro name="gazebo_link_flat_black" params="name gravity collide friction">
     <gazebo reference="${name}">
       <selfCollide>${collide}</selfCollide>
       <gravity>${gravity}</gravity>
@@ -89,9 +87,9 @@ POSSIBILITY OF SUCH DAMAGE.
       <mu2>${friction}</mu2>
       <material value="Gazebo/FlatBlack"/>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_link_caster" params="name">
+  <xacro:macro name="gazebo_link_caster" params="name">
     <gazebo reference="${name}">
       <selfCollide>false</selfCollide>
       <gravity>true</gravity>
@@ -100,9 +98,9 @@ POSSIBILITY OF SUCH DAMAGE.
       <maxVel>1.0</maxVel>
       <material value="Gazebo/FlatBlack"/>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_link_rubber" params="name">
+  <xacro:macro name="gazebo_link_rubber" params="name">
     <gazebo reference="${name}">
       <selfCollide>false</selfCollide>
       <gravity>true</gravity>
@@ -116,19 +114,19 @@ POSSIBILITY OF SUCH DAMAGE.
       <minDepth>0.00</minDepth>
       <material value="Gazebo/FlatBlack"/>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_joint" params="name">
+  <xacro:macro name="gazebo_joint" params="name">
     <gazebo reference="${name}">
       <xacro:if value="$(arg implicit_damping)">
         <implicitSpringDamper>1</implicitSpringDamper>
       </xacro:if>
     </gazebo>
-  </macro>
+  </xacro:macro>
 
-  <macro name="gazebo_joint_mimic" params="name">
+  <xacro:macro name="gazebo_joint_mimic" params="name">
     <gazebo reference="${name}">
     </gazebo>
-  </macro>
+  </xacro:macro>
 
 </robot>
